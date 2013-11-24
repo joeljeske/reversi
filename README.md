@@ -1,4 +1,32 @@
-reversi
-=======
+#Reversi
 
-A reversi game written for a Xilinx CPLD using VHDL.
+###Date: Spring 2012
+
+##Objective
+This project was created for a Digital Electronics class during my undergraduate at LeTourneau University. The objective of this project was to design, assemble, and program the game reversi using simple electronics and a CPLD. 
+
+##Team
+* Will Shephard (Team Lead)
+* Abby Jeske 
+* Joel Jeske
+* Patrick Lammert
+* Mario Perretta
+
+##Problem Base
+Our project was a physical version of the “Othello” game implemented using digital logic and VHDL programming on a CPLD.  The minimum requirements for the game were as follows
+* 6 x 6 game board, where each square displays a different color according to its owner and can be pressed or initiated in some manner directly by a player.* Flipping done along rows and columns* Button for player passing their turn (used when they cannot make a move)* Reset button* Dedicated power switch/button for the device* Player turn indicator* Indicate winner* Wall power supply (Not a variable power source)* CPLD – Only Coolrunner II XC2C64 Digilent CMOD or other approved CPLD board* The display case must be accessible for ease of troubleshooting and capable of being locked.* A complete schematic, copy of any programming, and Bill of Material (BOM) must be submitted to the team’s faculty advisor and the electrical technicianIf desired, these additional features could be added:
+* Indicate when a move that cannot be made is tried.* Automatic check for a player being unable to move (their turn is automatically passed)* Flipping done along diagonals* LCD touchscreen for displaying game board * Larger-sized game board (e.g. 8 x 8, 10 x 10, 12 x 12, etc.)* Keep track of running score
+
+##Approach
+In our initial approach we were going to try to implement an 8x8 game board since each column and row address would require the same number of bits as for a 6x6 game.  However, we quickly found that an 8x8 game board would be over twice as expensive to build as the 6x6, and since we wanted to keep our cost below $200, we reverted to building a 6x6 game board.
+Once that was decided, we divided our team into work groups—our team lead Will Shepard and team member Mario Perretta were assigned to build the box for the game, build a power supply, and install buttons and LED’s on our board; Joel Jeske was appointed head programmer, with Pat Lammert and Abbey Jeske being assistant programmers and hardware implementers (See Appendix 1, Fig.1).
+We decided that in light of all the debugging and wiring that this project would involve we would use breadboards to house our hardware instead of PCB’s.  Also, we chose to use bipolar LED’s for our button lights since they would be easier to wire and cheaper to buy than two individual LED’s per button.  We chose DPST switches for the buttons since the double pole feature would allow each button to send a two-bit user code, and 2 D-latches to store temporary user data for each button (See Appendix 2, Fig.1).  Which D-latch was enabled would depend on the enable inputs which would consist of the column and row wires of a particular button being ANDed together to enable the D-latch.
+To store all of the button addresses with their individual states, we decided that it would be less expensive if we bought a RAM chip to use with our smaller CPLD than to buy a bigger CPLD. The CPLD would take input from the buttons and send it to the RAM, then selectively read data from the RAM to find out which buttons needed to be changed (See Appendix 2, Fig. 3).  However, we also found that we would need to send the address of the button being pushed to the CPLD, so we chose 8-to-3 encoders to encode row and column addresses.  In addition, when our game needed to change the state of any given button, we would need the CPLD to send a signal to a certain button address, so we chose 3-to-8 decoders to decode the three-bit row and column addresses from the CPLD (See Appendix 2, Fig.2).
+As for programming, at Joel’s recommendation we decided that since we had to go ahead and program for flipping buttons along rows and columns that we would also code to flip along diagonals as well.  Since a game check for flip-able buttons would automatically detect the presence or absence of flip-able buttons, we also chose to add a move error indicator.  
+While our plan did seem a bit ambitious, we were confident that we could successfully implement it.  Not until we began to implement our design did we discover how difficult this project truly was.
+
+
+##Difficulties and SolutionsIn creating the electronic version of the game Othello (Reversi), we found many difficulties. The first main difficulty we found was how to individually tell each LED to be either off, red, or green. We considered directly wiring from the CPLD but we did not have enough pins on our CPLD for that implementation. We decided to use a 6 bit addressing system decoders and priority encoders. The CPLD would select an address that would correspond to 2 D-Latches that would store the state of the LED in that location. If the LED was off, both latches would be ‘0’s. If it was red, it would be “01” and green would be “10”. This solution worked very nicely. 
+Another difficulty we had was coding in VHDL. VHDL is a concurrent language that can also be sequential. It is a very difficult switch from any other language (functional, object-oriented). We overcame this difficulty by starting learning VHDL as soon as possible. Our programmer read a textbook on VHDL, which helped considerably.
+ We also had a serious difficulty getting our CPLD to respond accurately using a 555-Timer as our clock. Sometimes the CPLD would skip states and other times it would not move out of the current state. We found that the CPLD was looking for a much shorter rise time than what the timer was giving outputting. This was overcome by adding a Schmitt Triggering system to the clock input pin which added hysteresis.
+ Our last main difficulty was physically wiring the system and putting it into the box we had made. There were many wires going from our two breadboards to the top of the box where the buttons were mounted. We could wire the system correctly but when we tried to put it into the box, wires would come loose. We then bundled wire to make things neater which helped. We were finally able to overcome this issue when we used clear packaging tape to completely wrap our breadboards. This kept most wires from coming loose and we could still easily poke holes into the tape and fix loose wires with tweezers. 
