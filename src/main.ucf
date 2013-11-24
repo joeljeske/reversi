@@ -1,0 +1,57 @@
+###############################################################################
+# Author: Joel Jeske
+# Assignemnt: Reversi Project
+# Professor: Dr. Kim
+# Date Completed: April 25, 2012
+#
+#
+# Name in VHDL code main.vhd									#DIP on simple CPLD board
+
+
+# Clock NE555N TTL Timer
+NET "clk"			LOC = "p43" | schmitt_trigger;		#33
+
+# User turn indicators
+NET "user(0)"		LOC = "p12";								#1
+NET "user(1)"		LOC = "p13";								#2
+								#26
+
+NET "oe"				LOC = "p6";									#39	Output enable on SRAM
+NET "we"				LOC = "p5";									#38	Write enable on SRAM and board latches
+
+# The Bidirectional data lines to SRAM and to all latches
+NET "data(0)"		LOC = "p2";									#36	
+NET "data(1)"		LOC = "p3";									#37
+
+
+
+# Address lines to SRAM and to Decoders to Latches
+NET "raddr(0)"		LOC = "p37";								#27 	Column LSB
+NET "raddr(1)"		LOC = "p38";								#28
+NET "raddr(2)"		LOC = "p39";								#29	Column MSB
+NET "raddr(3)"		LOC = "p40";								#30	Row LSB
+NET "raddr(4)"		LOC = "p41";								#31
+NET "raddr(5)"		LOC = "p42";								#32	Row MSB
+
+
+# Address lines from the board
+NET "baddr(0)"		LOC = "p18";								#9		Column LSB
+NET "baddr(1)"		LOC = "p19";								#10	
+NET "baddr(2)"		LOC = "p20";								#11	Column MSB
+NET "baddr(3)"		LOC = "p21";								#12	Row LSB
+NET "baddr(4)"		LOC = "p22";								#13	
+NET "baddr(5)"		LOC = "p23";								#14	Row MSB
+
+# From board. HIGH if any button is pushed
+NET "button"		LOC = "p16";								#4	
+
+# LOW if user requests a board reset
+NET "reset"			LOC = "p8";									#40
+
+# Will indicate to user on a bad move
+NET "error"			LOC = "p14";								#3
+
+# LOW when input from user requesting a pass
+NET "pass"			LOC = "p36";
+
+###############################################################################
